@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "wujg-app-bucket-0613" //需要提前创建
+    bucket = "wujg-app-bucket-06132" //需要提前创建
     key    = "pipeline-terraform-statusfile/terraform.tfstate"
     region = "ap-east-1"
   }
