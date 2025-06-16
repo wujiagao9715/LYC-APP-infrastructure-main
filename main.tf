@@ -6,18 +6,18 @@ terraform {
     }
   }
 
-  # backend "s3" {
-  #   bucket = "wujg-app-bucket-0613" //需要提前创建
-  #   key    = "pipeline-terraform-statusfile/terraform.tfstate"
-  #   region = "ap-east-1"
-  # }
+  backend "s3" {
+    bucket = "wujg-app-bucket" //需要提前创建
+    key    = "pipeline-terraform-statusfile/terraform.tfstate"
+    region = "ap-southeast-2"
+  }
 
 }
 
 provider "aws" {
-  region = "ap-east-1"
-  access_key = "access_key"
-  secret_key = "secret_key"
+  # region = "ap-southeast-2"
+  # access_key = "access_key"
+  # secret_key = "secret_key"
 }
 
 resource "aws_security_group" "ec2_security_group" {
@@ -49,8 +49,8 @@ resource "aws_default_vpc" "default_vpc" {
 }
 
 resource "aws_instance" "linux_instance" {
-  ami                  = "ami-0a5e465d791bed879"
-  instance_type        = "t3.micro"
+  ami                  = "ami-00543daa0ad4d3ea4"
+  instance_type        = "t2.micro"
   key_name             = "WUJG-APP" //需要提前创建 创建EC2实例->创建密钥对
 
  # 指定安全组
@@ -80,7 +80,7 @@ resource "aws_instance" "linux_instance" {
                 sudo yum -y install ruby
                 sudo yum -y install wget
                 cd /home/ec2-user
-                wget https://aws-codedeploy-ap-east-1.s3.ap-east-1.amazonaws.com/latest/install
+                wget https://aws-codedeploy-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/latest/install
                 sudo chmod +x ./install
                 sudo ./install auto
                 systemctl status codedeploy-agent
