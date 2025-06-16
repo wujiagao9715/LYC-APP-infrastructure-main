@@ -6,11 +6,11 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket = "wujg-app-bucket-0613" //需要提前创建
-    key    = "pipeline-terraform-statusfile/terraform.tfstate"
-    region = "ap-east-1"
-  }
+  # backend "s3" {
+  #   bucket = "wujg-app-bucket-0613" //需要提前创建
+  #   key    = "pipeline-terraform-statusfile/terraform.tfstate"
+  #   region = "ap-east-1"
+  # }
 
 }
 
@@ -26,9 +26,9 @@ resource "aws_security_group" "ec2_security_group" {
   vpc_id      = aws_default_vpc.default_vpc.id
   ingress {
     description = "http access"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
@@ -49,12 +49,16 @@ resource "aws_default_vpc" "default_vpc" {
 }
 
 resource "aws_instance" "linux_instance" {
-  ami                  = "ami-00543daa0ad4d3ea4"
-  instance_type        = "t2.micro"
-  key_name             = "LY-APP" //需要提前创建 创建EC2实例->创建密钥对
-  iam_instance_profile = "EC2CodeDeploy1"
+  ami                  = "ami-0a5e465d791bed879"
+  instance_type        = "t3.micro"
+  key_name             = "WUJG-APP" //需要提前创建 创建EC2实例->创建密钥对
+
+ # 指定安全组
+  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+
+  iam_instance_profile = "EC2CodeDeploy"
   tags = {
-    Name = "LY-APP"
+    Name = "WUJG-APP"
   }
   user_data = <<-EOF
                 #!/bin/bash
