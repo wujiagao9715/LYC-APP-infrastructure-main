@@ -14,11 +14,11 @@ terraform {
 
 }
 
-# provider "aws" {
-#   # region = "ap-southeast-2"
-#   # access_key = "access_key"
-#   # secret_key = "secret_key"
-# }
+provider "aws" {
+  #region = "ap-southeast-2"
+  # access_key = "access_key"
+  # secret_key = "secret_key"
+}
 
 resource "aws_security_group" "ec2_security_group" {
   name        = "ec2 security group"
